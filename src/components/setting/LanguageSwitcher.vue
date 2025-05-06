@@ -5,7 +5,7 @@ import { setLanguage } from '@/i18n'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { systemApi } from '@/api/request'
 
-type AvailableLanguages = 'en-US' | 'zh-CN'
+type AvailableLanguages = 'en-US' | 'zh-CN' | 'es-ES'
 
 const { locale } = useI18n()
 const currentLanguage = ref<AvailableLanguages>(locale.value as AvailableLanguages)
@@ -25,6 +25,7 @@ onMounted(() => {
 const languages = {
   'en-US': 'English',
   'zh-CN': '简体中文',
+  'es-ES': 'Español',
 }
 </script>
 

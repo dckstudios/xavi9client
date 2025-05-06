@@ -1,6 +1,7 @@
 import { createI18n } from 'vue-i18n';
 import enUS from '../locales/en/index.json'
 import zhCN from '../locales/zh/index.json'
+import esES from '../locales/es/index.json'
 
 // 检测用户首选语言
 // const getBrowserLanguage = () => {
@@ -11,13 +12,16 @@ import zhCN from '../locales/zh/index.json'
 //   return 'en';
 // };
 
-type AvailableLanguages = 'en-US' | 'zh-CN'
+type AvailableLanguages = 'en-US' | 'zh-CN' | 'es-ES'
 
 // 从本地存储获取用户设置的语言
 const getBrowserLanguage = (): AvailableLanguages => {
   const navigatorLanguage = navigator.language.toLowerCase()
   if (navigatorLanguage.startsWith('zh')) {
     return 'zh-CN'
+  }
+  if (navigatorLanguage.startsWith('es')) {
+    return 'es-ES'
   }
   return 'en-US'
 }
@@ -36,6 +40,7 @@ const i18n = createI18n({
   messages: {
     'en-US': enUS,
     'zh-CN': zhCN,
+    'es-ES': esES,
   },
 })
 

@@ -1,0 +1,251 @@
+{
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "timeGroup": {
+      "today": "Hoy",
+      "yesterday": "Ayer",
+      "within7days": "Últimos 7 días",
+      "within30days": "Últimos 30 días",
+      "monthFormat": "MMMM",
+      "yearMonthFormat": "MMMM YYYY"
+    }
+  },
+  "chat": {
+    "scrollToBottom": "Desplazar al final",
+    "newChat": "Chat",
+    "send": "Enviar",
+    "typing": "Escribiendo...",
+    "thinking": "Pensando...",
+    "clearConversation": "Limpiar Conversación",
+    "exportConversation": "Exportar Conversación",
+    "inputPlaceholder": "Escribe un mensaje, presiona Enter para enviar, Shift + Enter para nueva línea",
+    "settings": {
+      "title": "Configuración",
+      "chatName": "Nombre del Chat",
+      "systemPrompt": "Instrucción del Sistema",
+      "rolePrompt": "Configuración de Rol",
+      "creativity": "Creatividad",
+      "openness": "Apertura",
+      "expressiveness": "Expresividad",
+      "vocabulary": "Vocabulario",
+      "saveSettings": "Guardar Configuración",
+      "saveSuccess": "Guardado con Éxito"
+    },
+    "sidebar": {
+      "chat": "Chat",
+      "confirmDelete": "¿Confirmar Eliminación del Chat?",
+      "confirmDeleteDesc": "Esta acción eliminará el chat \"{title}\", esto no se puede deshacer.",
+      "deleting": "Eliminando...",
+      "confirmDeleteBtn": "Confirmar Eliminación",
+      "newChat": "Nuevo Chat",
+      "deleteSuccess": "Eliminado con Éxito",
+      "deleteSuccessDesc": "El chat \"{title}\" ha sido eliminado",
+      "deleteFailed": "Error al Eliminar",
+      "unknownError": "Error Desconocido"
+    },
+    "promptEditor": {
+      "title": "Editar Instrucción",
+      "placeholder": "Introduce tu instrucción aquí..."
+    },
+    "discover":{
+      "title": "Descubrir"
+    },
+    "mcp": {
+      "title": "MCP"
+    }
+  },
+  "discover": {
+    "title": "Descubrir",
+    "searchPlaceholder": "Introduce contenido para buscar...",
+    "mine": "Mío",
+    "assistant": "Asistente",
+    "pageTitle": "Explora Agentes IA Premium",
+    "pageDescription": "Usa estas aplicaciones de plantilla, o personaliza las tuyas basadas en las plantillas.",
+    "categories": {
+      "translation": "Traducción",
+      "all": "Todos",
+      "academic": "Académico",
+      "copywriting": "Redacción",
+      "design": "Diseño",
+      "commercial": "Comercial",
+      "programming": "Programación",
+      "technology": "Tecnología",
+      "music": "Música",
+      "openSource": "Código Abierto",
+      "financial": "Financiero",
+      "medical": "Médico",
+      "legal": "Legal",
+      "education": "Educación",
+      "entertainment": "Entretenimiento",
+      "government": "Gobierno",
+      "other": "Otro"
+    },
+    "assistants": {
+      "frenchTranslator": {
+        "title": "Asistente de Traducción Francesa",
+        "description": "Asistente de traducción francés amigable, profesional y empático",
+        "type": "Traducción",
+        "tags": ["Traducción", "Humor", "Cultura"]
+      },
+      "codeHelper": {
+        "title": "Asistente de Código",
+        "description": "Asistente de programación profesional experto en múltiples lenguajes y frameworks",
+        "type": "Programación",
+        "tags": ["Programación", "Depuración", "Explicación"]
+      },
+      "englishWriting": {
+        "title": "Entrenador de Escritura en Inglés",
+        "description": "Proporciona orientación profesional y sugerencias de revisión para escritura en inglés",
+        "type": "Educación",
+        "tags": ["Escritura", "Inglés", "Educación"]
+      },
+      "mentalHealth": {
+        "title": "Consejero de Salud Mental",
+        "description": "Asistente IA que proporciona apoyo emocional y consejos de salud mental",
+        "type": "Salud",
+        "tags": ["Mental", "Emocional", "Salud"]
+      },
+      "creativeWriting": {
+        "title": "Asistente de Escritura Creativa",
+        "description": "Genera inspiración, ayuda en la creación de novelas, poesía y contenido creativo variado",
+        "type": "Escritura",
+        "tags": ["Creativo", "Escritura", "Inspiración"]
+      },
+      "dataAnalysis": {
+        "title": "Experto en Análisis de Datos",
+        "description": "Asistente profesional para análisis de datos, estadísticas y visualización",
+        "type": "Datos",
+        "tags": ["Datos", "Análisis", "Estadísticas"]
+      },
+      "travelPlanner": {
+        "title": "Planificador de Viajes",
+        "description": "Ayuda a planificar rutas de viaje, recomendar atracciones y proporcionar consejos de viaje",
+        "type": "Estilo de vida",
+        "tags": ["Viaje", "Planificación", "Consejos"]
+      },
+      "dietitian": {
+        "title": "Asesor de Dieta Saludable",
+        "description": "Proporciona consejos dietéticos equilibrados y recetas saludables",
+        "type": "Salud",
+        "tags": ["Dieta", "Salud", "Nutrición"]
+      },
+      "japaneseCoach": {
+        "title": "Entrenador de Aprendizaje de Japonés",
+        "description": "Orientación profesional para el aprendizaje de japonés y compañero de práctica",
+        "type": "Educación",
+        "tags": ["Japonés", "Aprendizaje", "Idioma"]
+      }
+    }
+  },
+  "settings": {
+    "modelFilter": {
+      "popular": "Popular",
+      "installed": "Instalado",
+      "searchPlaceholder": "deepseek..."
+    },
+    "title": "Configuración",
+    "language": "Idioma",
+    "theme": "Tema",
+    "apiSettings": "Configuración de API",
+    "modelSettings": "Configuración de Modelo",
+    "configureInterface": "Configura tu interfaz",
+    "system": "Sistema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "modelSelect": {
+      "selectModel": "Seleccionar Modelo",
+      "noLocalModel": "No se encontró modelo local",
+      "configureModel": "Configurar",
+      "clickToConfig": "Haz clic para configurar el modelo",
+      "localModel": "Modelo Local"
+    },
+    "apiModel": {
+      "modelProvider": "Proveedor",
+      "connectionSuccess": "Conexión Exitosa",
+      "connectionSuccessDesc": "Conectado exitosamente a la API",
+      "connectionFailed": "Conexión Fallida",
+      "testConnection": "Probar Conexión",
+      "testing": "Probando...",
+      "enableProvider": "Habilitar este proveedor en el chat",
+      "modelConfig": "Configuración del Modelo",
+      "apiKey": "Clave API",
+      "apiUrl": "URL de API",
+      "connectivityCheck": "Verificación de Conectividad",
+      "selectModelToTest": "Selecciona un modelo para probar la conectividad",
+      "availableModels": "Modelos Disponibles",
+      "enableModel": "Habilitar este modelo en el chat"
+    },
+    "localModel": {
+      "serviceNotResponding": "Servicio No Responde",
+      "serviceRunningNormal": "Servicio Local Funcionando Normal",
+      "installModelManager": "Instalar Gestor de Modelos",
+      "startModelManager": "Iniciar Gestor de Modelos",
+      "stopModelManager": "Detener Gestor de Modelos",
+      "refreshStatus": "Actualizar Estado",
+      "modelManagement": "Gestión de Modelos",
+      "moreModels": "¿Más Modelos?",
+      "installed": "Instalado",
+      "confirmDeleteDesc": "Esta acción eliminará el modelo {model}, necesitarás descargarlo de nuevo para usarlo.",
+      "deleting": "Eliminando...",
+      "confirmDelete": "Confirmar Eliminación",
+      "downloadOllama": "Descargar e Instalar Ollama",
+      "downloadOllamaDesc": "Haz clic en confirmar para abrir el navegador y descargar Ollama. Por favor, reinicia el software después de la instalación para verificar el estado de la instalación.",
+      "downloadNow": "Descargar Ahora",
+      "installSuccess": "Instalación de {model} Exitosa",
+      "installSuccessDesc": "El modelo ha sido instalado con éxito. Puedes empezar a usarlo ahora.",
+      "serviceNotRunning": "Gestor de Modelos No Ejecutándose",
+      "serviceNotInstalled": "Gestor de Modelos No Instalado",
+      "syncModel": "Sincronizar modelos ollama",
+      "syncModelSuccess": "Sincronización de Modelos Exitosa",
+      "syncModelSuccessDesc": "El modelo ha sido sincronizado con éxito. Puedes empezar a usarlo ahora.",
+      "syncModelFailed": "Sincronización de Modelos Fallida",
+      "syncModelFailedDesc": "La sincronización del modelo falló. Por favor, verifica tu conexión de red."
+    },
+    "sidebar": {
+      "models": "Modelos",
+      "localModel": "Modelo Local",
+      "apiModel": "Modelo API",
+      "general": "General",
+      "interface": "Interfaz",
+      "about": "Acerca de",
+      "data": "Datos",
+      "playground": "Área de Pruebas"
+    },
+    "models": {
+      "localModel": "Modelo Local",
+      "apiModel": "Configuración de Modelo API"
+    },
+    "data": {
+      "title": "Gestión de Datos",
+      "config": {
+        "title": "Configuración de Datos",
+        "description": "Configurar archivos del sistema"
+      },
+      "database": {
+        "title": "Base de Datos",
+        "description": "Puedes hacer copias de seguridad/restaurar contenido de chat a través de este directorio"
+      },
+      "executable": {
+        "title": "Archivos Ejecutables",
+        "description": "Para entornos de ejecución como bun/uv, añade manualmente a este directorio si la descarga falla"
+      },
+      "logs": {
+        "title": "Registros del Sistema",
+        "description": "Registrar logs de funcionamiento del sistema"
+      },
+      "openDirectory": "Abrir"
+    },
+    "about": {
+      "description": "Una herramienta LLM sencilla y fácil de usar, desplegada localmente.",
+      "star": "Estrella",
+      "accelerate": "Acelerar desarrollo"
+    }
+  }
+}
