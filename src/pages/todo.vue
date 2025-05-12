@@ -700,4 +700,3 @@ const priorityColor = (priority) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="high">{{ t('todo.high') }}</SelectItem>
-                  <SelectItem value="medium">{{ t('todo.medium') }}
