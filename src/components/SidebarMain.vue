@@ -33,6 +33,9 @@ import { useRoute } from 'vue-router'
 import { useEnvStore } from "@/stores/env"
 import { useI18n } from 'vue-i18n'
 import McpIcon from '@/components/icons/McpIcon.vue'
+import MicrosoftMailIcon from '@/components/icons/MicrosoftMailIcon.vue'
+import CalendarIcon from '@/components/icons/CalendarIcon.vue'
+import TodoIcon from '@/components/icons/TodoIcon.vue'
 
 const envStore = useEnvStore()
 const { t } = useI18n()
@@ -61,6 +64,24 @@ const data = {
       title: t('chat.discover.title'),
       url: 'discover',
       icon: Compass,
+      isActive: false,
+    },
+    {
+      title: t('email.title') || 'Microsoft Mail',
+      url: 'email',
+      icon: MicrosoftMailIcon,
+      isActive: false,
+    },
+    {
+      title: t('calendar.title') || 'Calendar',
+      url: 'calendar',
+      icon: CalendarIcon,
+      isActive: false,
+    },
+    {
+      title: t('todo.title') || 'To-Do List',
+      url: 'todo',
+      icon: TodoIcon,
       isActive: false,
     },
     {
