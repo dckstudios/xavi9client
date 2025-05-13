@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, markRaw } from 'vue'
+import { ref, markRaw, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   SidebarProvider,
@@ -17,7 +17,11 @@ import {
   type SidebarProps,
 } from '@/components/ui/sidebar'
 import Icon from '@/components/icon.vue'
+<<<<<<< HEAD
 import { Brain, HardDrive, Heart, PocketKnife, Database, Globe } from 'lucide-vue-next'
+=======
+import { Brain, HardDrive, Heart, PocketKnife, Database } from 'lucide-vue-next'
+>>>>>>> origin/microsoft-auth
 import LocalModel from '@/components/setting/LocalModel.vue'
 import ApiModel from '@/components/setting/ApiModel.vue'
 import About from '@/components/setting/About.vue'
@@ -26,12 +30,10 @@ import DataSet from '@/components/setting/DataSet.vue'
 import Playground from '@/components/setting/Playground.vue'
 import ProxySettings from '@/components/setting/ProxySettings.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
-// const props = withDefaults(defineProps<SidebarProps>(), {
-//   collapsible: 'icon',
-// })
-const menuData = [
+// Hacemos que menuData sea un computed para que se actualice cuando cambie el idioma
+const menuData = computed(() => [
   {
     label: t('settings.sidebar.models'),
     icon: Brain,
@@ -88,19 +90,8 @@ const menuData = [
       ] : [])
     ],
   },
-  // {
-  //   label: '数据',
-  //   icon: Brain,
-  //   items: [
-  //     {
-  //       label: '备份/恢复',
-  //       icon: HardDrive,
-  //       key: 'interface',
-  //       component: markRaw(LocalModel),
-  //     },
-  //   ],
-  // },
-]
+])
+
 const emit = defineEmits(['change'])
 
 const activeKey = ref('LocalModel')
@@ -108,6 +99,11 @@ const handleMenuClick = e => {
   emit('change', e)
   activeKey.value = e.key
 }
+
+// Opcional: desbugear a consola cuando cambia el idioma para verificar
+watch(locale, (newLocale) => {
+  console.log(`Idioma cambiado a: ${newLocale}`)
+})
 </script>
 
 <template>
