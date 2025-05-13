@@ -5,9 +5,7 @@ import { setLanguage } from '@/i18n'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { systemApi } from '@/api/request'
 
-// Declara un tipo que coincida exactamente con el tipo usado en i18n
 type AvailableLanguages = 'en-US' | 'zh-CN' | 'es-ES' | 'ca-ES'
-
 const { locale } = useI18n()
 const currentLanguage = ref<AvailableLanguages>(locale.value as AvailableLanguages)
 
@@ -32,7 +30,7 @@ const languages = {
   'es-ES': 'Español',
   'ca-ES': 'Català',
   'en-US': 'English',
-  'zh-CN': '简体中文'
+  'zh-CN': '简体中文',
 }
 </script>
 

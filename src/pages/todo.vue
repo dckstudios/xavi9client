@@ -694,6 +694,12 @@ const priorityColor = (priority) => {
             
             <div class="grid items-center gap-2">
               <label class="text-sm font-medium" for="task-priority">{{ t('todo.priority') }}</label>
+              <Select v-model="taskForm.priority">
+                <SelectTrigger>
+                  <SelectValue :placeholder="t('todo.priority')" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="high">{{ t('todo.high') }}</SelectItem>
               <Select id="task-priority" v-model="taskForm.priority">
                 <SelectTrigger>
                   <SelectValue :placeholder="t('todo.selectPriority')" />

@@ -4,10 +4,13 @@ import zhCN from '../locales/zh/index.json'
 import esES from '../locales/es/index.json'
 import caES from '../locales/ca/index.json'
 
+
 // Actualizado para incluir todos los idiomas disponibles
 export type AvailableLanguages = 'en-US' | 'zh-CN' | 'es-ES' | 'ca-ES'
 
-// Función para detectar el idioma del navegador
+
+type AvailableLanguages = 'en-US' | 'zh-CN' | 'es-ES'
+
 const getBrowserLanguage = (): AvailableLanguages => {
   const navigatorLanguage = navigator.language.toLowerCase()
   if (navigatorLanguage.startsWith('zh')) {
@@ -41,6 +44,7 @@ const i18n = createI18n({
     'zh-CN': zhCN,
     'es-ES': esES,
     'ca-ES': caES,
+
   },
 })
 

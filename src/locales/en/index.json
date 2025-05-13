@@ -72,7 +72,10 @@
     "aiSuggestions": "AI Suggestions",
     "noTasks": "No tasks to display",
     "all": "All",
-    "active": "Active"
+
+    "active": "Active",
+    "completed": "Completed"
+
   },
   "chat": {
     "scrollToBottom": "Scroll to Bottom",
