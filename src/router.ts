@@ -7,6 +7,7 @@ import Mcp from '@/pages/mcp.vue'
 import Email from '@/pages/email.vue'
 import Calendar from '@/pages/calendar.vue'
 import Todo from '@/pages/todo.vue'
+import Rag from '@/pages/rag.vue'
 import Analytics from 'analytics'
 import googleAnalytics from '@analytics/google-analytics'
 
@@ -23,6 +24,7 @@ const analytics = Analytics({
 
 const routes = [
   { path: '/', component: Chat },
+  { path: '/rag', component: Rag },
   { path: '/discover', component: Discover },
   { path: '/setting', component: Setting },
   { path: '/mcp', component: Mcp },
