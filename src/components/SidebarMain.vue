@@ -38,56 +38,58 @@ const envStore = useEnvStore()
 const { t } = useI18n()
 const route = useRoute()
 
-const data = {
-  user: {
-    name: 'eechat',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
-  navMain: [
-    {
-      title: t('chat.newChat'),
-      url: '/',
-      icon: Inbox,
-      isActive: false,
-    },
-    {
-      title: t('chat.mcp.title'),
-      url: '/mcp',
-      icon: McpIcon,
-      isActive: false,
-    },
-    {
-      title: t('chat.discover.title'),
-      url: 'discover',
-      icon: Compass,
-      isActive: false,
-    },
-    {
-      title: t('chat.settings.title'),
-      url: 'setting',
-      icon: SlidersHorizontal,
-      isActive: false,
-    },
-  ],
-  chats: [
-    {
-      name: '新对话',
-      teaser: '对话的内容简短展示的内容',
-    },
-  ],
+// Información de usuario (no cambia con el idioma)
+const user = {
+  name: 'eechat',
+  email: 'm@example.com',
+  avatar: '/avatars/shadcn.jpg',
 }
 
-// 计算当前活动项
+// Hacemos que los elementos de navegación sean reactivos usando computed
+const navMain = computed(() => [
+  {
+    title: t('chat.newChat'),
+    url: '/',
+    icon: Inbox,
+    isActive: false,
+  },
+  {
+    title: t('chat.mcp.title'),
+    url: '/mcp',
+    icon: McpIcon,
+    isActive: false,
+  },
+  {
+    title: t('chat.discover.title'),
+    url: 'discover',
+    icon: Compass,
+    isActive: false,
+  },
+  {
+    title: t('chat.settings.title'),
+    url: 'setting',
+    icon: SlidersHorizontal,
+    isActive: false,
+  },
+])
+
+const chats = [
+  {
+    name: '新对话',
+    teaser: '对话的内容简短展示的内容',
+  },
+]
+
+// Calculamos el item activo basado en navMain computed
 const activeItem = computed(() => {
   const currentPath = route.path
-  // 找到匹配当前路径的导航项
-  const matchedItem = data.navMain.find(item => {
+  // Encontrar el ítem que coincide con la ruta actual
+  const matchedItem = navMain.value.find(item => {
     if (item.url === '/') {
       return currentPath === '/'
     }
     return currentPath.includes(item.url)
-  }) || data.navMain[0]
+  }) || navMain.value[0]
 
   return matchedItem
 })
@@ -114,16 +116,6 @@ const props = withDefaults(defineProps<SidebarProps>(), {
         <SidebarMenuItem>
           <SidebarMenuButton size="lg" as-child class="md:h-8 md:p-0">
             <a href="#">
-              <!-- <div
-                class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
-              >
-                <Command class="size-4" />
-              </div>
-              <div class="grid flex-1 text-left text-sm leading-tight">
-                <span class="truncate font-semibold">Acme Inc</span>
-                <span class="truncate text-xs">Enterprise</span>
-              </div>
-              -->
               <img
                 class="block w-full size-6 rounded-lg dark:hidden block"
                 src="../assets/icon.svg"
@@ -143,7 +135,7 @@ const props = withDefaults(defineProps<SidebarProps>(), {
       <SidebarGroup>
         <SidebarGroupContent class="px-0">
           <SidebarMenu>
-            <SidebarMenuItem v-for="item in data.navMain" :key="item.title">
+            <SidebarMenuItem v-for="item in navMain" :key="item.title">
               <SidebarMenuButton
                 :tooltip="h('div', { hidden: false }, item.title)"
                 :is-active="activeItem.title === item.title"
@@ -164,7 +156,7 @@ const props = withDefaults(defineProps<SidebarProps>(), {
     </SidebarContent>
     <SidebarFooter>
       <Updater></Updater>
-      <!-- <NavUser :user="data.user" /> -->
+      <!-- <NavUser :user="user" /> -->
     </SidebarFooter>
   </Sidebar>
 </template>

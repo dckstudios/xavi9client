@@ -5,7 +5,8 @@ import { setLanguage } from '@/i18n'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { systemApi } from '@/api/request'
 
-type AvailableLanguages = 'en-US' | 'zh-CN'
+// Declara un tipo que coincida exactamente con el tipo usado en i18n
+type AvailableLanguages = 'en-US' | 'zh-CN' | 'es-ES' | 'ca-ES'
 
 const { locale } = useI18n()
 const currentLanguage = ref<AvailableLanguages>(locale.value as AvailableLanguages)
@@ -13,8 +14,13 @@ const currentLanguage = ref<AvailableLanguages>(locale.value as AvailableLanguag
 const changeLanguage = (value: string) => {
   const lang = value as AvailableLanguages
   currentLanguage.value = lang
-  setLanguage(lang)
-  systemApi.locale(lang)
+  
+  // Usa type assertion para asegurar compatibilidad con setLanguage
+  setLanguage(lang as any)
+  
+  // Usa type assertion para asegurar compatibilidad con systemApi
+  systemApi.locale(lang as any)
+  
   // window.location.reload()
 }
 
@@ -23,6 +29,8 @@ onMounted(() => {
 })
 
 const languages = {
+  'es-ES': 'Español',
+  'ca-ES': 'Català',
   'en-US': 'English',
   'zh-CN': '简体中文',
 }
