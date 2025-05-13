@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue'
-import { CheckCheck, ClipboardList, Plus, Edit, Trash2, X, Info, Sparkles, Calendar, Layout, List } from 'lucide-vue-next'
+import { CheckCheck, ClipboardList, Plus, Edit, Trash2, X, Info, Sparkles, Calendar, Layout, List, Mail } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -700,3 +700,87 @@ const priorityColor = (priority) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="high">{{ t('todo.high') }}</SelectItem>
+              <Select id="task-priority" v-model="taskForm.priority">
+                <SelectTrigger>
+                  <SelectValue :placeholder="t('todo.selectPriority')" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="low">{{ t('todo.low') }}</SelectItem>
+                  <SelectItem value="medium">{{ t('todo.medium') }}</SelectItem>
+                  <SelectItem value="high">{{ t('todo.high') }}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          
+          <div class="grid items-center gap-2">
+            <label class="text-sm font-medium" for="task-status">{{ t('todo.status') }}</label>
+            <Select id="task-status" v-model="taskForm.status">
+              <SelectTrigger>
+                <SelectValue :placeholder="t('todo.selectStatus')" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="backlog">Backlog</SelectItem>
+                <SelectItem value="next">Siguiente</SelectItem>
+                <SelectItem value="in-progress">En Curso</SelectItem>
+                <SelectItem value="blocked">Bloqueado</SelectItem>
+                <SelectItem value="completed">Completada</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div class="flex items-center gap-2" v-if="aiSuggestion">
+            <div class="p-3 text-sm bg-muted/50 rounded-md border">
+              <div class="flex items-start gap-2">
+                <Sparkles class="h-4 w-4 text-blue-500 flex-shrink-0 mt-0.5" />
+                <div>{{ aiSuggestion }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <DialogFooter class="flex justify-between items-center">
+          <div class="flex items-center gap-2">
+            <Button 
+              v-if="!aiSuggestion" 
+              variant="outline" 
+              size="sm" 
+              @click="getAIHelp"
+            >
+              <Sparkles class="mr-2 h-4 w-4" />
+              {{ t('todo.getAIHelp') }}
+            </Button>
+            
+            <Button 
+              v-if="isEditMode" 
+              variant="destructive" 
+              size="sm" 
+              @click="deleteTask"
+            >
+              <Trash2 class="mr-2 h-4 w-4" />
+              {{ t('todo.delete') }}
+            </Button>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              @click="showTaskDialog = false"
+            >
+              <X class="mr-2 h-4 w-4" />
+              {{ t('todo.cancel') }}
+            </Button>
+            
+            <Button 
+              type="submit" 
+              @click="saveTask"
+            >
+              <CheckCheck class="mr-2 h-4 w-4" />
+              {{ t('todo.save') }}
+            </Button>
+          </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  </div>
+</template>
