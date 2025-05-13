@@ -3,7 +3,7 @@
 </div>
 <div align="center">
   <img src="./icon/icon.png" alt="Captura de pantalla de la aplicación xavi9" width="60" />
-  <h1><a href="https://ee.chat">xavi9</a> </h1>
+  <h1><a href="https://ee.chat">Xavi9</a> </h1>
   <p>🚀 Potente Aplicación de Chat con IA Local - Segura, Eficiente, Personalizada</p>
   <p>  <a href="./README.md">English</a> | <a href="./README.zh-CN.md">简体中文</a> | Español </p>
 

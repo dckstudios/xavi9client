@@ -43,7 +43,7 @@ const route = useRoute()
 
 const data = {
   user: {
-    name: 'xavi9',
+    name: 'Xavi9',
     email: 'm@example.com',
     avatar: '/avatars/shadcn.jpg',
   },

@@ -32,8 +32,7 @@ const languages = {
   'es-ES': 'Español',
   'ca-ES': 'Català',
   'en-US': 'English',
-  'zh-CN': '简体中文',
-  'es-ES': 'Español',
+  'zh-CN': '简体中文'
 }
 </script>
 
