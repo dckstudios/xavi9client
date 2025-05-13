@@ -33,16 +33,70 @@ import { useRoute } from 'vue-router'
 import { useEnvStore } from "@/stores/env"
 import { useI18n } from 'vue-i18n'
 import McpIcon from '@/components/icons/McpIcon.vue'
+import MicrosoftMailIcon from '@/components/icons/MicrosoftMailIcon.vue'
+import CalendarIcon from '@/components/icons/CalendarIcon.vue'
+import TodoIcon from '@/components/icons/TodoIcon.vue'
 
 const envStore = useEnvStore()
 const { t } = useI18n()
 const route = useRoute()
 
-// Información de usuario (no cambia con el idioma)
-const user = {
-  name: 'eechat',
-  email: 'm@example.com',
-  avatar: '/avatars/shadcn.jpg',
+const data = {
+  user: {
+    name: 'xavi9',
+    email: 'm@example.com',
+    avatar: '/avatars/shadcn.jpg',
+  },
+  navMain: [
+    {
+      title: t('chat.newChat'),
+      url: '/',
+      icon: Inbox,
+      isActive: false,
+    },
+    {
+      title: t('chat.mcp.title'),
+      url: '/mcp',
+      icon: McpIcon,
+      isActive: false,
+    },
+    {
+      title: t('chat.discover.title'),
+      url: 'discover',
+      icon: Compass,
+      isActive: false,
+    },
+    {
+      title: t('email.title') || 'Microsoft Mail',
+      url: 'email',
+      icon: MicrosoftMailIcon,
+      isActive: false,
+    },
+    {
+      title: t('calendar.title') || 'Calendar',
+      url: 'calendar',
+      icon: CalendarIcon,
+      isActive: false,
+    },
+    {
+      title: t('todo.title') || 'To-Do List',
+      url: 'todo',
+      icon: TodoIcon,
+      isActive: false,
+    },
+    {
+      title: t('chat.settings.title'),
+      url: 'setting',
+      icon: SlidersHorizontal,
+      isActive: false,
+    },
+  ],
+  chats: [
+    {
+      name: '新对话',
+      teaser: '对话的内容简短展示的内容',
+    },
+  ],
 }
 
 // Hacemos que los elementos de navegación sean reactivos usando computed

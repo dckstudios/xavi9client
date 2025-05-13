@@ -11,7 +11,7 @@ const phoneButtonIcon = ref("copy")
 const emailButtonIcon = ref("copy")
 
 const github = () => {
-  window.ipcRenderer.invoke("open-external", "https://github.com/Lucassssss/eechat")
+  window.ipcRenderer.invoke("open-external", "https://github.com/Lucassssss/xavi9")
 }
 
 const copyToClipboard = (text: string, type: string) => {

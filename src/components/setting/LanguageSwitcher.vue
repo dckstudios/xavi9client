@@ -33,6 +33,7 @@ const languages = {
   'ca-ES': 'Català',
   'en-US': 'English',
   'zh-CN': '简体中文',
+  'es-ES': 'Español',
 }
 </script>
 
