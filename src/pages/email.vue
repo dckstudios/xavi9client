@@ -12,17 +12,29 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
+interface Email {
+  id: number
+  sender: string
+  subject: string
+  preview: string
+  date: string
+  read: boolean
+  body: string
+}
+
 // Reactive state for the email interface
-const selectedEmail = ref(null)
+const selectedEmail = ref<Email | null>(null)
 const showCompose = ref(false)
+
 const emailDraft = reactive({
   to: '',
   subject: '',
   body: ''
 })
+
 const aiSuggestion = ref('')
-const emailList = ref([
-  {
+const emailList = ref<Email[]>([
+   {
     id: 1,
     sender: 'Microsoft Team',
     subject: 'Welcome to Microsoft Email Integration',

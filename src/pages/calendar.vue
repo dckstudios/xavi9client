@@ -16,32 +16,64 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
+interface CalendarDay {
+  day: number | ''
+  isCurrentMonth: boolean
+  date?: Date
+}
+
+interface CalendarEvent {
+  id: number
+  title: string
+  startDate: string
+  endDate: string
+  description?: string
+  location?: string
+  allDay?: boolean
+}
+
 // Reactive state for the calendar interface
 const currentDate = ref(new Date())
 const currentView = ref('month')
 const showEventDialog = ref(false)
 const isEditMode = ref(false)
-const selectedEvent = ref(null)
+const selectedEvent = ref<CalendarEvent | null>(null)
 const aiSuggestion = ref('')
+
+const days = ref<CalendarDay[]>([])
+const events = ref<CalendarEvent[]>([])
+
+const formatDateForInput = (date: Date): string => {
+  return date.toISOString().slice(0, 16)
+}
 
 // Calendar event model
 const eventForm = reactive({
   id: 0,
   title: '',
-  startDate: '',
-  endDate: '',
+  startDate: formatDateForInput(new Date()),
+  endDate: formatDateForInput(new Date(Date.now() + 60 * 60 * 1000)),
   location: '',
   description: '',
   allDay: false
 })
 
+// Fix the event creation
+const createEvent = () => {
+  const newEvent: CalendarEvent = {
+    ...eventForm,
+    id: Math.max(0, ...events.value.map(e => e.id)) + 1
+  }
+  events.value.push(newEvent)
+}
+
 // Sample events data
-const events = ref([
+events.value = [
   {
     id: 1,
     title: 'Team Meeting',
-    startDate: new Date(new Date().setHours(10, 0, 0, 0)).toISOString(),
-    endDate: new Date(new Date().setHours(11, 30, 0, 0)).toISOString(),
+    startDate: new Date().toISOString().substring(0, 16), // string en formato compatible
+    endDate: new Date(Date.now() + 3600000).toISOString().substring(0, 16),
     location: 'Conference Room A',
     description: 'Weekly team sync to discuss project progress and blockers.',
     allDay: false
@@ -49,8 +81,8 @@ const events = ref([
   {
     id: 2,
     title: 'Product Launch Preparation',
-    startDate: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(),
-    endDate: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(),
+    startDate: new Date().toISOString().substring(0, 16), // string en formato compatible
+    endDate: new Date(Date.now() + 3600000).toISOString().substring(0, 16),
     location: 'Marketing Department',
     description: 'Finalize materials and coordination for upcoming product launch.',
     allDay: true
@@ -58,13 +90,13 @@ const events = ref([
   {
     id: 3,
     title: 'Client Presentation',
-    startDate: new Date(new Date().setDate(new Date().getDate() + 4)).toISOString(),
-    endDate: new Date(new Date().setDate(new Date().getDate() + 4)).toISOString(),
+    startDate: new Date().toISOString().substring(0, 16), // string en formato compatible
+    endDate: new Date(Date.now() + 3600000).toISOString().substring(0, 16),
     location: 'Executive Boardroom',
     description: 'Present quarterly results to key client stakeholders.',
     allDay: false
   }
-])
+]
 
 // Calendar utility functions
 const daysInMonth = computed(() => {
@@ -79,17 +111,15 @@ const firstDayOfMonth = computed(() => {
   return new Date(year, month, 1).getDay()
 })
 
-const calendarDays = computed(() => {
-  const days = []
+const calendarDays = computed<CalendarDay[]>(() => {
+  const days: CalendarDay[] = []
   const numDays = daysInMonth.value
   const firstDay = firstDayOfMonth.value
   
-  // Add empty cells for days before the first day of the month
   for (let i = 0; i < firstDay; i++) {
     days.push({ day: '', isCurrentMonth: false })
   }
   
-  // Add the days of the current month
   for (let i = 1; i <= numDays; i++) {
     days.push({
       day: i,
@@ -125,7 +155,7 @@ const upcomingEvents = computed(() => {
   const today = new Date()
   return events.value
     .filter(event => new Date(event.startDate) >= today)
-    .sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
+    .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
     .slice(0, 5)
 })
 
@@ -147,8 +177,8 @@ const openNewEventDialog = () => {
   isEditMode.value = false
   eventForm.id = 0
   eventForm.title = ''
-  eventForm.startDate = new Date().toISOString().substring(0, 16)
-  eventForm.endDate = new Date(new Date().getTime() + 60 * 60 * 1000).toISOString().substring(0, 16)
+  eventForm.startDate = formatDateForInput(new Date())
+  eventForm.endDate = formatDateForInput(new Date(Date.now() + 60 * 60 * 1000))
   eventForm.location = ''
   eventForm.description = ''
   eventForm.allDay = false
@@ -160,8 +190,8 @@ const openEditEventDialog = (event) => {
   selectedEvent.value = event
   eventForm.id = event.id
   eventForm.title = event.title
-  eventForm.startDate = new Date(event.startDate).toISOString().substring(0, 16)
-  eventForm.endDate = new Date(event.endDate).toISOString().substring(0, 16)
+  eventForm.startDate = event.startDate
+  eventForm.endDate = event.endDate
   eventForm.location = event.location
   eventForm.description = event.description
   eventForm.allDay = event.allDay
@@ -177,18 +207,15 @@ const saveEvent = () => {
     }
   } else {
     // Add new event
-    const newEvent = {
-      id: events.value.length + 1,
-      ...eventForm
-    }
-    events.value.push(newEvent)
+    createEvent()
   }
   showEventDialog.value = false
 }
 
 const deleteEvent = () => {
   if (isEditMode.value && selectedEvent.value) {
-    events.value = events.value.filter(event => event.id !== selectedEvent.value.id)
+    const eventToDelete = selectedEvent.value
+    events.value = events.value.filter(event => event.id !== eventToDelete.id)
     showEventDialog.value = false
     selectedEvent.value = null
   }
@@ -222,7 +249,7 @@ const getEventHeight = (event) => {
   const start = new Date(event.startDate)
   const end = new Date(event.endDate)
   
-  const durationMinutes = (end - start) / (1000 * 60)
+  const durationMinutes = (end.getTime() - start.getTime()) / (1000 * 60)
   
   // If it's less than 30 minutes, make it at least 30 minutes tall for visibility
   return Math.max(durationMinutes * (12 / 60), 30)
@@ -239,6 +266,13 @@ const getAIHelp = () => {
     aiSuggestion.value = "I can help optimize your calendar entry. Would you like me to suggest a better title or description format to make this event more findable and actionable later?"
   }
 }
+
+const getEventsForDay = (date: Date): CalendarEvent[] => {
+  return events.value.filter(event =>
+    new Date(event.startDate).toDateString() === date.toDateString()
+  )
+}
+
 </script>
 
 <template>
@@ -319,8 +353,8 @@ const getAIHelp = () => {
             <div class="week-header grid grid-cols-7 gap-1 mb-2">
               <div v-for="(day, index) in 7" :key="index" class="p-2 text-center font-medium">
                 {{ new Date(
-                  new Date(currentDate.value).setDate(
-                    new Date(currentDate.value).getDate() - new Date(currentDate.value).getDay() + index
+                  new Date(currentDate).setDate(
+                    new Date(currentDate).getDate() - new Date(currentDate).getDay() + index
                   )
                 ).toLocaleDateString('default', { weekday: 'short', day: 'numeric', month: 'short' }) }}
               </div>
@@ -367,7 +401,7 @@ const getAIHelp = () => {
           <div class="day-view h-full flex flex-col">
             <!-- Day header -->
             <div class="day-header p-2 text-center font-medium mb-2">
-              {{ currentDate.value.toLocaleDateString('default', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) }}
+              {{ currentDate.toLocaleDateString('default', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) }}
             </div>
             
             <!-- Day time slots -->
@@ -386,7 +420,7 @@ const getAIHelp = () => {
                   <div v-for="hour in 24" :key="hour" class="h-12 border-b w-full"></div>
                   
                   <!-- Events for this day -->
-                  <div v-for="event in getEventsForDay(currentDate.value)" :key="event.id"
+                  <div v-for="event in getEventsForDay(currentDate)" :key="event.id"
                     class="absolute rounded p-2 overflow-hidden shadow-sm cursor-pointer"
                     :class="{'bg-primary/20': !event.allDay, 'bg-secondary/20': event.allDay}"
                     :style="{

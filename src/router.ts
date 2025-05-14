@@ -9,11 +9,10 @@ import Calendar from '@/pages/calendar.vue'
 import Rag from '@/pages/rag.vue'
 import Analytics from 'analytics'
 import googleAnalytics from '@analytics/google-analytics'
-import Rag from '@/pages/rag.vue'
 
 /* Initialize analytics */
 const analytics = Analytics({
-  app: 'ee-chat-app-name',
+  app: 'xavi9-app-name',
   version: 100,
   plugins: [
     googleAnalytics({
