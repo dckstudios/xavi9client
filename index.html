@@ -2,10 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon"  href="/src/assets/icons/xavi_icon.png" />
+    <link rel="icon" href="/src/assets/icons/xavi_icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms;" /> -->
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://www.clarity.ms/tag/qqk3uy3rhh https://www.clarity.ms/s/0.8.0/ https://va.vercel-scripts.com/v1/script.debug.js;" />
+    
+    <!-- Política de seguridad de contenido (CSP) -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://www.clarity.ms/tag/qqk3uy3rhh https://www.clarity.ms/s/0.8.0/ https://va.vercel-scripts.com/v1/script.debug.js https://alcdn.msauth.net;" />
+    
+    <!-- MSAL desde CDN -->
+    <script src="https://alcdn.msauth.net/browser/2.32.2/js/msal-browser.min.js"></script>
+    
+    <!-- Manejador de popup/redirección -->
+    <script>
+      // Función para manejar redirecciones en una nueva ventana
+      function handleAuthRedirect() {
+        // Si esta es una ventana popup de redirección y contiene un código de autorización
+        if (window.opener && 
+            (window.location.hash.includes('code=') || 
+             window.location.search.includes('code='))) {
+          
+          console.log("Detectada redirección en ventana separada. Enviando mensaje a la ventana principal.");
+          
+          try {
+            // Enviar la URL completa a la ventana principal
+            window.opener.postMessage({
+              type: 'AUTH_RESPONSE',
+              url: window.location.href
+            }, '*');
+            
+            // Cerrar esta ventana
+            window.close();
+          } catch (err) {
+            console.error("Error comunicando con la ventana principal:", err);
+            document.body.innerHTML = '<div style="text-align:center; margin-top:50px;"><h1>Autenticación completada</h1><p>Puedes cerrar esta ventana y volver a la aplicación.</p></div>';
+          }
+        }
+      }
+      
+      // Ejecutar cuando la página esté cargada
+      window.addEventListener('DOMContentLoaded', handleAuthRedirect);
+    </script>
+    
     <title>Xavi9</title>
   </head>
   <body>

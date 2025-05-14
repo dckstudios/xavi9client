@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
-import { Mail, Send, Inbox, Trash2, Edit, User, FileText, Info, Sparkles } from 'lucide-vue-next'
+import { ref, reactive, onMounted, computed } from 'vue'
+import { Mail, Send, Inbox, Trash2, Edit, User, FileText, Info, Sparkles, AlertCircle } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -9,8 +9,16 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useI18n } from 'vue-i18n'
+import { 
+  initializeMsal, 
+  loginWithMicrosoft, 
+  handleRedirectResponse, 
+  getActiveAccount,
+  silentLogin
+} from '@/lib/msal'
+import { isAuthenticated, userAccount, accessToken } from '@/stores/auth'// Asumiendo que tienes un composable para el tema
 
-const { t } = useI18n()
+const { t } = useI18n() // Agrega esta línea para acceder al estado del tema
 
 interface Email {
   id: number
@@ -34,7 +42,9 @@ const emailDraft = reactive({
 
 const aiSuggestion = ref('')
 const emailList = ref<Email[]>([
-   {
+  // Se pueden mantener los correos de ejemplo o dejarlo vacío para probar
+  /* Ejemplo:
+  {
     id: 1,
     sender: 'Microsoft Team',
     subject: 'Welcome to Microsoft Email Integration',
@@ -42,26 +52,12 @@ const emailList = ref<Email[]>([
     date: new Date().toLocaleDateString(),
     read: true,
     body: 'Dear User,\n\nThank you for connecting your Microsoft account with our application. You can now access and manage your emails directly from here.\n\nBest regards,\nMicrosoft Team'
-  },
-  {
-    id: 2,
-    sender: 'Project Update',
-    subject: 'Weekly Progress Report',
-    preview: 'Here is the summary of this week\'s progress...',
-    date: new Date().toLocaleDateString(),
-    read: false,
-    body: 'Hi Team,\n\nHere is the summary of this week\'s progress:\n\n1. Completed the user authentication module\n2. Started working on the dashboard design\n3. Fixed 5 critical bugs in the backend\n\nLet me know if you have any questions.\n\nRegards,\nProject Manager'
-  },
-  {
-    id: 3,
-    sender: 'HR Department',
-    subject: 'Upcoming Company Event',
-    preview: 'We are pleased to announce our annual company retreat...',
-    date: new Date().toLocaleDateString(),
-    read: true,
-    body: 'Dear Colleagues,\n\nWe are pleased to announce our annual company retreat will be held next month. Please save the date and prepare for a wonderful team-building experience.\n\nMore details will follow soon.\n\nBest regards,\nHR Department'
   }
+  */
 ])
+
+// Computed para verificar si hay correos
+const hasEmails = computed(() => emailList.value.length > 0)
 
 // Functions
 const selectEmail = (email) => {
@@ -120,10 +116,141 @@ const requestAIExplanation = () => {
         "a company announcement. The sender is providing information about an upcoming event and indicating that more details will follow.")
   }
 }
+
+const showLoginPopup = ref(true)
+const isLoading = ref(false)
+const isLoggingIn = ref(false)
+
+const tryLogin = async () => {
+  if (isLoggingIn.value) return
+  isLoggingIn.value = true
+  isLoading.value = true
+
+  try {
+    const result = await loginWithMicrosoft(false)
+    if (result) {
+      isAuthenticated.value = true
+      userAccount.value = result.account
+      accessToken.value = result.accessToken
+      showLoginPopup.value = false
+    }
+  } catch (popupErr) {
+    if (popupErr.errorCode === 'popup_window_error') {
+      try {
+        await loginWithMicrosoft(true) // fallback a redirección
+      } catch (redirectError) {
+        console.error("Error en redirección:", redirectError)
+      }
+    } else {
+      console.error('Error crítico de autenticación:', popupErr)
+    }
+  } finally {
+    isLoading.value = false
+    isLoggingIn.value = false
+  }
+}
+onMounted(async () => {
+  try {
+    const msalInstance = await initializeMsal()
+
+    const redirectResult = await handleRedirectResponse()
+    if (redirectResult) {
+      console.log('[MSAL] Redirección completada con éxito:', redirectResult)
+      isAuthenticated.value = true
+      userAccount.value = redirectResult.account
+      accessToken.value = redirectResult.accessToken
+      showLoginPopup.value = false
+      await fetchOutlookEmails() // <---- aquí
+      return
+    }
+
+    const account = getActiveAccount()
+    if (account) {
+      userAccount.value = account
+      const silentResult = await silentLogin()
+      if (silentResult) {
+        isAuthenticated.value = true
+        accessToken.value = silentResult.accessToken
+        showLoginPopup.value = false
+        await fetchOutlookEmails()
+      }
+    }
+  } catch (err) {
+    console.error('Error initializing auth:', err)
+  }
+})
+
+
+const fetchOutlookEmails = async () => {
+  if (!accessToken.value) return
+
+  try {
+    const response = await fetch('https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=10', {
+      headers: {
+        Authorization: `Bearer ${accessToken.value}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    const data = await response.json()
+
+    if (data.value) {
+      emailList.value = data.value.map((msg, index) => ({
+        id: index + 1,
+        sender: msg.from?.emailAddress?.name || 'Unknown',
+        subject: msg.subject || '(Sin asunto)',
+        preview: msg.bodyPreview || '',
+        date: new Date(msg.receivedDateTime).toLocaleDateString(),
+        read: msg.isRead,
+        body: '' // Cuerpo completo opcional, se puede cargar al hacer click
+      }))
+    } else {
+      console.error('No se pudieron obtener los correos:', data)
+    }
+  } catch (err) {
+    console.error('Error al obtener correos:', err)
+  }
+}
+
+
 </script>
 
 <template>
   <div class="email-container flex h-full">
+    <div v-if="showLoginPopup" class="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50">
+      <div class="bg-background rounded-2xl shadow-xl p-8 w-[400px] text-center space-y-6 border border-border">
+        <!-- Microsoft logo -->
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"
+          alt="Microsoft Logo"
+          class="mx-auto h-8"
+        />
+
+        <!-- Title -->
+        <h2 class="text-2xl font-semibold text-foreground">Sign in with Microsoft</h2>
+
+        <!-- Button -->
+        <Button
+          @click="tryLogin"
+          class="w-full flex items-center justify-center gap-2 bg-[#2F2F2F] dark:bg-[#3F3F3F] text-white hover:bg-[#1f1f1f] dark:hover:bg-[#2f2f2f]"
+          :disabled="isLoading"
+        >
+          <div v-if="isLoading" class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          <img
+            v-else
+            src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"
+            alt="Microsoft Logo"
+            class="h-5 w-5"
+          />
+          <span class="font-medium">{{ isLoading ? 'Iniciando sesión...' : 'Sign in with Microsoft' }}</span>
+        </Button>
+
+        <!-- Optional description -->
+        <p class="text-sm text-muted-foreground">
+          Connect your Outlook account to access your emails here.
+        </p>
+      </div>
+    </div>
     <!-- Email sidebar -->
     <div class="email-sidebar w-1/4 min-w-[200px] border-r overflow-hidden p-2">
       <div class="flex justify-between items-center mb-4">
@@ -136,7 +263,8 @@ const requestAIExplanation = () => {
       </div>
       
       <ScrollArea class="h-[calc(100%-3rem)]">
-        <div class="space-y-2">
+        <!-- Si hay correos, mostrarlos -->
+        <div v-if="hasEmails" class="space-y-2">
           <div 
             v-for="email in emailList" 
             :key="email.id"
@@ -151,6 +279,19 @@ const requestAIExplanation = () => {
             <div class="text-sm font-medium truncate">{{ email.subject }}</div>
             <div class="text-xs text-muted-foreground truncate">{{ email.preview }}</div>
           </div>
+        </div>
+        
+        <!-- Si NO hay correos, mostrar mensaje -->
+        <div v-else class="flex flex-col items-center justify-center h-[calc(100vh-12rem)] text-center">
+          <AlertCircle class="h-10 w-10 text-muted-foreground mb-4" />
+          <h3 class="text-xl font-medium mb-2">No tienes correos</h3>
+          <p class="text-sm text-muted-foreground mb-4">
+            Tu bandeja de entrada está vacía
+          </p>
+          <Button variant="outline" @click="openCompose">
+            <Edit class="mr-2 h-4 w-4" />
+            {{ t('email.compose') || 'Compose' }}
+          </Button>
         </div>
       </ScrollArea>
     </div>
@@ -266,8 +407,18 @@ const requestAIExplanation = () => {
       <div v-else class="h-full flex items-center justify-center">
         <div class="text-center">
           <Mail class="mx-auto h-12 w-12 text-muted-foreground" />
-          <h3 class="mt-4 text-lg font-medium">{{ t('email.noSelection') || 'Select an email to read' }}</h3>
-          <p class="text-sm text-muted-foreground">{{ t('email.noSelectionHint') || 'Or click the edit button to compose a new message' }}</p>
+          <h3 class="mt-4 text-lg font-medium">
+            {{ hasEmails 
+              ? (t('email.noSelection') || 'Select an email to read') 
+              : (t('email.noEmails') || 'No hay correos disponibles') 
+            }}
+          </h3>
+          <p class="text-sm text-muted-foreground">
+            {{ hasEmails 
+              ? (t('email.noSelectionHint') || 'Or click the edit button to compose a new message') 
+              : (t('email.composeFirst') || 'Comienza escribiendo un nuevo mensaje') 
+            }}
+          </p>
           <Button class="mt-4" @click="openCompose">
             <Edit class="mr-2 h-4 w-4" />
             {{ t('email.compose') || 'Compose' }}

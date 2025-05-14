@@ -7,6 +7,7 @@ import i18n from './i18n'
 import './assets/index.css'
 import { init } from './lib/init.js'
 import './demos/ipc'
+import { msalInstance } from '@/lib/msal'
 // If you want use Node.js, the`nodeIntegration` needs to be enabled in the Main process.
 // import './demos/node'
 
