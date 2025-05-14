@@ -109,9 +109,9 @@ const processedFormalContent = computed(() => {
           class="rounded-lg px-4 py-2 list-disc text-[14px] whitespace-wrap msg-item"
           :class="
             role === 'user'
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-gray-100 dark:bg-primary-foreground dark:text-white'
-          "
+                ? 'bg-[#4a85d0] text-white' // Cambia esto para usar el color de tu variante xavi
+                : 'bg-gray-100 dark:bg-primary-foreground dark:text-white'
+            "
         >
 
           <div v-if="reasoningContent && processedReasoningContent" class="thinking-container pb-4 mb-4 border-b text-sm leading-8">

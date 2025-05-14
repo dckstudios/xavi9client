@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
+import { Switch } from '@/components/ui/switch'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -20,25 +21,33 @@ const { t } = useI18n()
 const currentFilter = ref('all')
 const showTaskDialog = ref(false)
 const isEditMode = ref(false)
-const selectedTask = ref(null)
+const selectedTask = ref<Task | null>(null)
 const aiSuggestion = ref('')
 const searchQuery = ref('')
 const viewMode = ref('list') // 'list' or 'board'
 
-// Todo task model
-const taskForm = reactive({
+interface Task {
+  id: number
+  title: string
+  description?: string
+  completed: boolean
+  priority: 'low' | 'medium' | 'high'
+  status: 'backlog' | 'next' | 'in-progress' | 'blocked' | 'completed'
+  dueDate?: string
+}
+
+const taskForm = reactive<Task>({
   id: 0,
   title: '',
   description: '',
   dueDate: '',
   priority: 'medium',
-  status: 'backlog', // 'backlog', 'next', 'in-progress', 'blocked', 'completed'
+  status: 'backlog',
   completed: false
 })
 
 // Sample tasks data
-const tasks = ref([
-  {
+const tasks = ref<Task[]>([{
     id: 1,
     title: 'Prepare weekly report',
     description: 'Compile data from all departments and prepare summary slides.',
@@ -82,8 +91,7 @@ const tasks = ref([
     priority: 'high',
     status: 'blocked',
     completed: false
-  }
-])
+  }])
 
 // Watch for status changes and update completed property
 watch(() => [...tasks.value], (newTasks) => {
@@ -121,7 +129,7 @@ const filteredTasks = computed(() => {
     const query = searchQuery.value.toLowerCase()
     result = result.filter(task => 
       task.title.toLowerCase().includes(query) || 
-      task.description.toLowerCase().includes(query)
+      task.description?.toLowerCase().includes(query)
     )
   }
 
@@ -139,46 +147,41 @@ const filteredTasks = computed(() => {
     }
     
     // Then sort by due date
-    return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+    return new Date(a.dueDate!).getTime() - new Date(b.dueDate!).getTime()
   })
 })
 
 // Get tasks by status for board view
-const tasksByStatus = computed(() => {
-  // Create arrays for each status column
-  const result = {
-    'backlog': [],
-    'next': [],
+const tasksByStatus = computed<Record<Task['status'], Task[]>>(() => {
+  const result: Record<Task['status'], Task[]> = {
+    backlog: [],
+    next: [],
     'in-progress': [],
-    'blocked': [],
-    'completed': []
+    blocked: [],
+    completed: []
   }
-  
-  // Fill arrays with tasks
+
   let filteredResult = tasks.value
-  
-  // Apply search filter if needed
+
   if (searchQuery.value.trim()) {
     const query = searchQuery.value.toLowerCase()
     filteredResult = filteredResult.filter(task => 
       task.title.toLowerCase().includes(query) || 
-      task.description.toLowerCase().includes(query)
+      task.description?.toLowerCase().includes(query)
     )
   }
-  
-  // Sort tasks by priority and add to corresponding array
+
   filteredResult.forEach(task => {
     result[task.status].push(task)
   })
-  
-  // Sort each status array by priority
+
   Object.keys(result).forEach(status => {
-    result[status].sort((a, b) => {
+    result[status as Task['status']].sort((a, b) => {
       const priorityOrder = { high: 0, medium: 1, low: 2 }
       return priorityOrder[a.priority] - priorityOrder[b.priority]
     })
   })
-  
+
   return result
 })
 
@@ -202,17 +205,20 @@ const statusConfig = {
 
 // Task due date formatting
 const formatDueDate = (dateString) => {
-  const date = new Date(dateString)
-  const today = new Date()
-  const tomorrow = new Date(today)
-  tomorrow.setDate(tomorrow.getDate() + 1)
+  if (!dateString) return t('todo.noDueDate') || 'No due date';
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return t('todo.invalidDate') || 'Invalid date';
+  
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
   
   if (date.toDateString() === today.toDateString()) {
-    return `${t('common.timeGroup.today')}`
+    return t('common.timeGroup.today') || 'Today';
   } else if (date.toDateString() === tomorrow.toDateString()) {
-    return `${t('common.timeGroup.tomorrow') || 'Tomorrow'}`
+    return t('common.timeGroup.tomorrow') || 'Tomorrow';
   } else {
-    return date.toLocaleDateString()
+    return date.toLocaleDateString();
   }
 }
 
@@ -260,8 +266,8 @@ const saveTask = () => {
   } else {
     // Add new task
     const newTask = {
-      id: tasks.value.length + 1,
-      ...taskForm
+      ...taskForm,
+      id: tasks.value.length + 1
     }
     // If status is completed, set completed to true
     if (newTask.status === 'completed') {
@@ -274,7 +280,8 @@ const saveTask = () => {
 
 const deleteTask = () => {
   if (isEditMode.value && selectedTask.value) {
-    tasks.value = tasks.value.filter(task => task.id !== selectedTask.value.id)
+    const taskToDelete = selectedTask.value
+    tasks.value = tasks.value.filter(task => task.id !== taskToDelete.id)
     showTaskDialog.value = false
     selectedTask.value = null
   }
@@ -392,8 +399,7 @@ const priorityColor = (priority) => {
         </div>
         
         <Button @click="openNewTaskDialog">
-          <Plus class="mr-2 h-4 w-4" />
-          {{ t('todo.newTask') }}
+          <Plus class="w-4 h-4" />{{ t("rag.sidebar.create") }}
         </Button>
       </div>
     </div>

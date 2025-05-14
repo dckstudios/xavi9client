@@ -106,12 +106,17 @@
       "name": "文档名称",
       "dataCount": "数据条数",
       "status": "状态",
+      "download": "下载",
       "statusReady": "就绪",
       "statusIndexing": "处理中",
       "enabled": "启用",
       "createdAt": "创建时间",
       "actions": "操作"
-    }
+    },
+    "documentList": "文档列表",
+    "addDocument": "添加文档",
+    "modelConfig": "模型配置",
+    "helpDocument": "帮助文档"
   },
   "discover": {
     "title": "发现",

@@ -1,19 +1,27 @@
 <template>
   <div class="flex items-center">
-    <Avatar size="sm" class="overflow-hidden p-1 bg-slate-300 dark:bg-white dark:text-sidebar" :style="{
+    <Avatar 
+      size="sm" 
+      class="overflow-hidden p-1 bg-slate-300 dark:bg-white dark:text-sidebar" 
+      :style="{
         height: props.size + 'px',
         width: props.size + 'px',
-      }">
-      <AvatarImage v-if="iconExists" :src="src"></AvatarImage>
+      }"
+    >
+      <AvatarImage 
+        v-if="iconExists" 
+        :src="src"
+        :alt="props.name"
+      ></AvatarImage>
       <AvatarFallback>{{ props.name.charAt(0).toUpperCase() }}</AvatarFallback>
     </Avatar>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed, defineProps, defineEmits } from 'vue'
+import { ref, watch, defineProps } from 'vue'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-const emit = defineEmits()
+
 const props = defineProps({
   name: {
     type: String,
@@ -26,61 +34,49 @@ const props = defineProps({
   },
 })
 
-// 本地图标路径
+// Ruta de los iconos locales
 const localIconsPath = '/src/assets/icons/'
-
-// 远程图标路径（作为备用）
-const remoteIconsPath = 'https://registry.npmmirror.com/@lobehub/icons-static-svg/1.25.0/files/icons/'
 
 const src = ref('')
 const iconExists = ref(true)
 
-// 检查图标是否存在的函数
+// Función para verificar si existe el icono
 const checkIconExists = (url) => {
   return new Promise((resolve) => {
-    if (url.startsWith('http')) {
-      // 远程图标检查
-      const img = new Image()
-      img.onload = () => resolve(true)
-      img.onerror = () => resolve(false)
-      img.src = url
-    } else {
-      // 本地图标检查 - 使用fetch API
-      fetch(url)
-        .then(response => resolve(response.ok))
-        .catch(() => resolve(false))
-    }
+    // Para archivos PNG locales
+    fetch(url)
+      .then(response => resolve(response.ok))
+      .catch(() => resolve(false))
   })
 }
 
 watch(
   () => props.name, 
   async (val) => {
-    // 首先尝试使用本地图标
-    const localPath = `${localIconsPath}${val}.svg`
+    // Intenta primero con PNG
+    const localPathPng = `${localIconsPath}${val}.png`
     
     try {
-      // 检查本地图标是否存在
-      const exists = await checkIconExists(localPath)
+      const exists = await checkIconExists(localPathPng)
       
       if (exists) {
-        src.value = localPath
+        src.value = localPathPng
         iconExists.value = true
       } else {
-        // 如果本地不存在，尝试使用远程图标
-        const remotePath = `${remoteIconsPath}${val}.svg`
-        const remoteExists = await checkIconExists(remotePath)
+        // Si no existe el PNG, intenta con SVG
+        const localPathSvg = `${localIconsPath}${val}.svg`
+        const existsSvg = await checkIconExists(localPathSvg)
         
-        if (remoteExists) {
-          src.value = remotePath
+        if (existsSvg) {
+          src.value = localPathSvg
           iconExists.value = true
         } else {
-          // 如果远程也不存在，使用fallback
+          // Si no existe ninguno, usa el fallback
           iconExists.value = false
         }
       }
     } catch (error) {
-      console.error('加载图标出错:', error)
+      console.error('Error cargando el icono:', error)
       iconExists.value = false
     }
   }, 

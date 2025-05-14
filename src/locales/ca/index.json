@@ -68,6 +68,60 @@
       "title": "MCP"
     }
   },
+  "rag": {
+    "title": "Base de Coneixement",
+    "sidebar": {
+      "title": "Base de Coneixement",
+      "create": "Nova Base de Coneixement",
+      "knowledgeBases": "Bases de Coneixement",
+      "noKnowledgeBases": "Encara no hi ha bases de coneixement",
+      "description": "Descripció",
+      "isDefault": "Base de coneixement per defecte",
+      "createBaseDesc": "Crear una nova base de coneixement",
+      "documents": "Documents",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "setDefault": "Establir com a predeterminada",
+      "chunkMethod": "Mètode de fragmentació",
+      "selectChunkMethod": "Seleccionar mètode de fragmentació",
+      "chunkSize": "Mida del fragment",
+      "chunkSizeDesc": "Fragments més grans generen vectors més precisos però consumeixen més recursos",
+      "chunkOverlap": "Solapament de fragments",
+      "chunkOverlapDesc": "Un major solapament millora la precisió però augmenta l'ús de recursos",
+      "embeddingModel": "Model d'Embedding",
+      "embeddingModelType": "Tipus de model",
+      "selectEmbeddingModel": "Seleccionar model d'embedding",
+      "selectEmbeddingModelType": "Seleccionar tipus de model",
+      "embeddingModelDesc": "El model d'embedding converteix text en vectors",
+      "embeddingDimension": "Dimensió d'embedding",
+      "selectEmbeddingDimension": "Seleccionar dimensió",
+      "embeddingDimensionDesc": "Dimensions més altes milloren la precisió però requereixen més recursos",
+      "textUnderstandingModel": "Model de comprensió de text",
+      "selectTextModel": "Seleccionar model de text",
+      "imageUnderstandingModel": "Model de comprensió d'imatge",
+      "selectImageModel": "Seleccionar model d'imatge",
+      "rerankEnabled": "Habilitar reordenació",
+      "selectRerankModel": "Seleccionar model de reordenació",
+      "rerankModel": "Model de reordenació",
+      "rerankModelDesc": "S'utilitza per ordenar els resultats de cerca",
+      "moreConfig": "Més configuració"
+    },
+    "document": {
+      "name": "Nom del document",
+      "dataCount": "Nombre de dades",
+      "status": "Estat",
+      "download": "Descarregar",
+      "statusReady": "Llest",
+      "statusIndexing": "Processant",
+      "enabled": "Habilitat",
+      "createdAt": "Data de creació",
+      "actions": "Accions"
+    },
+    "documentList": "Llista de documents",
+    "addDocument": "Afegir document",
+    "modelConfig": "Configuració del model",
+    "helpDocument": "Document d'ajuda"
+  },
   "discover": {
     "title": "Descobrir",
     "searchPlaceholder": "Introdueix contingut per cercar...",
@@ -326,13 +380,13 @@
       "openDirectory": "Obrir"
     },
     "about": {
-    "description": "Una eina LLM de desplegament local, senzilla i fàcil d'utilitzar.",
-    "star": "Valora amb una estrella",
-    "accelerate": "Accelerar el desenvolupament",
-    "contactTitle": "Contacta amb nosaltres",
-    "wechatGroup": "Grup de feedback a WeChat",
-    "contactDev": "Contactar amb el desenvolupador",
-    "businessTitle": "Personalització de programari / serveis comercials"
+      "description": "Una eina LLM de desplegament local, senzilla i fàcil d'utilitzar.",
+      "star": "Valora amb una estrella",
+      "accelerate": "Accelerar el desenvolupament",
+      "contactTitle": "Contacta amb nosaltres",
+      "wechatGroup": "Grup de feedback a WeChat",
+      "contactDev": "Contactar amb el desenvolupador",
+      "businessTitle": "Personalització de programari / serveis comercials"
     },
     "devPlayground": {
       "title": "Zona de proves per a desenvolupament",

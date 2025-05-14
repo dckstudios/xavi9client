@@ -748,18 +748,19 @@ onMounted(async () => {
   </Dialog>
 
   <Sidebar :collapsible="props.collapsible" class="hidden flex-1 md:flex absolute">
-    <SidebarHeader class="gap-3.5 border-b p-4 h-[64px]">
-      <div class="flex w-full items-center justify-between">
-        <div class="text-base font-medium text-foreground">
+    <SidebarHeader class="gap-3.5 border-b p-4">
+      <div class="flex flex-col w-full">
+        <!-- Título -->
+        <div class="text-base font-medium text-foreground mb-2">
           {{ t("rag.sidebar.title") }}
         </div>
+        <!-- Botón -->
         <Label class="flex items-center gap-2 text-sm">
-          <Button size="sm" class="font-bold" @click="openCreateDialog">
+          <Button size="sm" class="font-bold" variant="xavi" @click="openCreateDialog">
             <Plus class="w-4 h-4" />{{ t("rag.sidebar.create") }}
           </Button>
         </Label>
       </div>
-      <!-- <SidebarInput placeholder="搜索知识库..." /> -->
     </SidebarHeader>
     <SidebarContent>
       <ScrollArea

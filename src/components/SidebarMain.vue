@@ -55,12 +55,12 @@ const data = {
       icon: Inbox,
       isActive: false,
     },
-    // {
-    //   title: t('rag.title'),
-    //   url: '/rag',
-    //   icon: BookOpen,
-    //   isActive: false,
-    // },
+   {
+      title: t('rag.title'),
+      url: '/rag',
+      icon: BookOpen,
+      isActive: false,
+    },
     {
       title: t('chat.mcp.title'),
       url: '/mcp',
@@ -127,11 +127,35 @@ const navMain = computed(() => [
     isActive: false,
   },
   {
+    title: t('rag.title'),
+    url: '/rag',
+    icon: BookOpen,
+    isActive: false,
+  },
+  {
+    title: t('email.title') || 'Microsoft Mail',
+    url: 'email',
+    icon: MicrosoftMailIcon,
+    isActive: false,
+  },
+  {
+    title: t('calendar.title') || 'Calendar',
+    url: 'calendar',
+    icon: CalendarIcon,
+    isActive: false,
+  },
+  {
+    title: t('todo.title') || 'To-Do List',
+    url: 'todo',
+    icon: TodoIcon,
+    isActive: false,
+  },
+  {
     title: t('chat.settings.title'),
     url: 'setting',
     icon: SlidersHorizontal,
     isActive: false,
-  },
+  }
 ])
 
 const chats = [
@@ -176,16 +200,16 @@ const props = withDefaults(defineProps<SidebarProps>(), {
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton size="lg" as-child class="md:h-8 md:p-0">
-            <a href="#">
+            <a href="#" class="flex items-center justify-center">
               <img
-                class="block w-full size-6 rounded-lg dark:hidden block"
-                src="../assets/icon.svg"
-                alt=""
+                class="h-7 w-7 object-contain rounded-lg dark:hidden"
+                src="../assets/xavi_icon.png"
+                alt="Xavi Icon"
               />
               <img
-                class="w-full size-6 rounded-lg hidden dark:block"
-                src="../assets/icon_dark.svg"
-                alt=""
+                class="h-7 w-7 object-contain rounded-lg hidden dark:block"
+                src="../assets/xavi_icon.png"
+                alt="Xavi Icon"
               />
             </a>
           </SidebarMenuButton>

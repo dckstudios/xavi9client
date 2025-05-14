@@ -17,11 +17,7 @@ import {
   type SidebarProps,
 } from '@/components/ui/sidebar'
 import Icon from '@/components/icon.vue'
-<<<<<<< HEAD
 import { Brain, HardDrive, Heart, PocketKnife, Database, Globe } from 'lucide-vue-next'
-=======
-import { Brain, HardDrive, Heart, PocketKnife, Database } from 'lucide-vue-next'
->>>>>>> origin/microsoft-auth
 import LocalModel from '@/components/setting/LocalModel.vue'
 import ApiModel from '@/components/setting/ApiModel.vue'
 import About from '@/components/setting/About.vue'

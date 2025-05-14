@@ -208,7 +208,7 @@ const groupedSessions = computed(() => {
             {{ t('chat.sidebar.chat') }}
         </div>
         <Label class="flex items-center gap-2 text-sm">
-          <Button size="sm" class="font-bold" @click="createNewChat">
+          <Button size="sm" class="font-bold" variant="xavi" @click="createNewChat">
             <Plus class="w-4 h-4" />{{ t('chat.sidebar.newChat') }}
           </Button>
         </Label>

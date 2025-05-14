@@ -68,6 +68,60 @@
       "title": "MCP"
     }
   },
+  "rag": {
+    "title": "Base de Conocimiento",
+    "sidebar": {
+      "title": "Base de Conocimiento",
+      "create": "Nueva Base de Conocimiento",
+      "knowledgeBases": "Bases de Conocimiento",
+      "noKnowledgeBases": "Aún no hay bases de conocimiento",
+      "description": "Descripción",
+      "isDefault": "Base de conocimiento predeterminada",
+      "createBaseDesc": "Crear una nueva base de conocimiento",
+      "documents": "Documentos",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "setDefault": "Establecer como predeterminada",
+      "chunkMethod": "Método de fragmentación",
+      "selectChunkMethod": "Seleccionar método de fragmentación",
+      "chunkSize": "Tamaño de fragmento",
+      "chunkSizeDesc": "Fragmentos más grandes generan vectores más precisos pero consumen más recursos",
+      "chunkOverlap": "Solapamiento de fragmentos",
+      "chunkOverlapDesc": "Mayor solapamiento mejora la precisión pero aumenta el uso de recursos",
+      "embeddingModel": "Modelo de Embedding",
+      "embeddingModelType": "Tipo de modelo",
+      "selectEmbeddingModel": "Seleccionar modelo de embedding",
+      "selectEmbeddingModelType": "Seleccionar tipo de modelo",
+      "embeddingModelDesc": "El modelo de embedding convierte texto en vectores",
+      "embeddingDimension": "Dimensión de embedding",
+      "selectEmbeddingDimension": "Seleccionar dimensión",
+      "embeddingDimensionDesc": "Dimensiones más altas aumentan la precisión pero consumen más recursos",
+      "textUnderstandingModel": "Modelo de comprensión de texto",
+      "selectTextModel": "Seleccionar modelo de texto",
+      "imageUnderstandingModel": "Modelo de comprensión de imágenes",
+      "selectImageModel": "Seleccionar modelo de imágenes",
+      "rerankEnabled": "Habilitar reordenamiento",
+      "selectRerankModel": "Seleccionar modelo de reordenamiento",
+      "rerankModel": "Modelo de reordenamiento",
+      "rerankModelDesc": "Se utiliza para reordenar resultados de búsqueda",
+      "moreConfig": "Más configuraciones"
+    },
+    "document": {
+      "name": "Nombre del documento",
+      "dataCount": "Cantidad de datos",
+      "download": "Descargar",
+      "status": "Estado",
+      "statusReady": "Listo",
+      "statusIndexing": "Procesando",
+      "enabled": "Habilitado",
+      "createdAt": "Fecha de creación",
+      "actions": "Acciones"
+    },
+    "documentList": "Lista de documentos",
+    "addDocument": "Agregar documento",
+    "modelConfig": "Configuración del modelo",
+    "helpDocument": "Documento de ayuda"
+  },
   "discover": {
     "title": "Descubrir",
     "searchPlaceholder": "Ingresa contenido para buscar...",
@@ -264,7 +318,7 @@
         "updateSuccessDesc": "El modelo ha sido actualizado correctamente.",
         "updateFailed": "Error al actualizar modelo"
       }
-      },
+    },
     "localModel": {
       "serviceNotResponding": "Servicio no responde",
       "serviceRunningNormal": "Servicio local funcionando normalmente",
@@ -350,7 +404,7 @@
       "sendMessage": "Enviar mensaje"
     }
   },
-"mcp": {
+  "mcp": {
     "title": "Gestión de MCP",
     "subtitle": "Gestiona e instala aplicaciones MCP para potenciar tus asistentes de IA",
     "helpDoc": "Documentación de ayuda",

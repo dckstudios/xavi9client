@@ -97,6 +97,7 @@ const handleRecord = () => {
           type="submit"
           :disabled="disabled"
           size="icon"
+          variant="xavi"
           class="ml-auto gap-1.5 "
         >
           <CornerDownLeft class="size-3.5" />

@@ -31,59 +31,19 @@ import {
 const { t } = useI18n()
 const { toast } = useToast()
 
+interface Document {
+  id: number
+  title: string
+  description: string
+  type: string
+  created_at: string
+  dataCount: number
+  status: string
+  enabled: boolean
+}
+
 // 模拟文档数据
-const documents = ref([
-  { 
-    id: '1', 
-    title: '产品说明书.pdf', 
-    description: '详细介绍产品功能和使用方法的说明文档',
-    type: 'pdf',  
-    created_at: '2023-06-15T10:30:00Z',
-    dataCount: 5,
-    status: 'ready', // ready 或 indexing
-    enabled: true
-  },
-  { 
-    id: '2', 
-    title: '用户手册.docx', 
-    description: '面向最终用户的操作指南和常见问题解答',
-    type: 'docx',  
-    created_at: '2023-06-16T14:20:00Z',
-    dataCount: 3,
-    status: 'indexing',
-    enabled: true
-  },
-  { 
-    id: '3', 
-    title: '技术规格.xlsx', 
-    description: '产品技术参数和性能指标详细说明',
-    type: 'xlsx',  
-    created_at: '2023-07-01T09:15:00Z',
-    dataCount: 8,
-    status: 'ready',
-    enabled: false
-  },
-  { 
-    id: '4', 
-    title: '常见问题.md', 
-    description: '用户常见问题和解决方案汇总',
-    type: 'md',  
-    created_at: '2023-07-10T16:45:00Z',
-    dataCount: 12,
-    status: 'ready',
-    enabled: true
-  },
-  { 
-    id: '5', 
-    title: '安装指南.txt', 
-    description: '软件安装步骤和环境配置要求',
-    type: 'txt',  
-    created_at: '2023-08-05T11:30:00Z',
-    dataCount: 2,
-    status: 'indexing',
-    enabled: false
-  },
-])
+const documents = ref<Document[]>([])
 
 // 格式化日期
 const formatDate = (dateString: string) => {

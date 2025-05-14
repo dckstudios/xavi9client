@@ -117,12 +117,66 @@
       "title": "Edit Prompt",
       "placeholder": "Enter your prompt here..."
     },
-    "discover":{
+    "discover": {
       "title": "Discover"
     },
     "mcp": {
       "title": "MCP"
     }
+  },
+  "rag": {
+    "title": "Knowledge Base",
+    "sidebar": {
+      "title": "Knowledge Base",
+      "create": "New Knowledge Base",
+      "knowledgeBases": "Knowledge Bases",
+      "noKnowledgeBases": "No knowledge bases yet",
+      "description": "Description",
+      "isDefault": "Default Knowledge Base",
+      "createBaseDesc": "Create a new knowledge base",
+      "documents": "Documents",
+      "edit": "Edit",
+      "delete": "Delete",
+      "setDefault": "Set as Default",
+      "chunkMethod": "Chunk Method",
+      "selectChunkMethod": "Select Chunk Method",
+      "chunkSize": "Chunk Size",
+      "chunkSizeDesc": "Larger chunks yield more accurate vectors but consume more resources",
+      "chunkOverlap": "Chunk Overlap",
+      "chunkOverlapDesc": "Greater overlap improves accuracy but increases resource usage",
+      "embeddingModel": "Embedding Model",
+      "embeddingModelType": "Model Type",
+      "selectEmbeddingModel": "Select Embedding Model",
+      "selectEmbeddingModelType": "Select Model Type",
+      "embeddingModelDesc": "Embedding model converts text into vectors",
+      "embeddingDimension": "Embedding Dimension",
+      "selectEmbeddingDimension": "Select Embedding Dimension",
+      "embeddingDimensionDesc": "Higher dimensions increase accuracy but consume more resources",
+      "textUnderstandingModel": "Text Understanding Model",
+      "selectTextModel": "Select Text Model",
+      "imageUnderstandingModel": "Image Understanding Model",
+      "selectImageModel": "Select Image Model",
+      "rerankEnabled": "Enable Rerank",
+      "selectRerankModel": "Select Rerank Model",
+      "rerankModel": "Rerank Model",
+      "rerankModelDesc": "Used to reorder search results",
+      "moreConfig": "More Configuration"
+    },
+    "document": {
+      "name": "Document Name",
+      "dataCount": "Data Count",
+      "status": "Status",
+      "download": "Download",
+      "statusReady": "Ready",
+      "statusIndexing": "Indexing",
+      "enabled": "Enabled",
+      "createdAt": "Created At",
+      "actions": "Actions"
+    },
+    "documentList": "Document List",
+    "addDocument": "Add Document",
+    "modelConfig": "Model Configuration",
+    "helpDocument": "Help Document"
   },
   "discover": {
     "title": "Discover",
@@ -155,55 +209,91 @@
         "title": "French Translation Assistant",
         "description": "Friendly, professional and empathetic French translation AI assistant",
         "type": "Translation",
-        "tags": ["Translation", "Humor", "Culture"]
+        "tags": [
+          "Translation",
+          "Humor",
+          "Culture"
+        ]
       },
       "codeHelper": {
         "title": "Code Assistant",
         "description": "Professional programming assistant proficient in multiple programming languages and frameworks",
         "type": "Programming",
-        "tags": ["Programming", "Debugging", "Explanation"]
+        "tags": [
+          "Programming",
+          "Debugging",
+          "Explanation"
+        ]
       },
       "englishWriting": {
         "title": "English Writing Coach",
         "description": "Provides professional English writing guidance and revision suggestions",
         "type": "Education",
-        "tags": ["Writing", "English", "Education"]
+        "tags": [
+          "Writing",
+          "English",
+          "Education"
+        ]
       },
       "mentalHealth": {
         "title": "Mental Health Counselor",
         "description": "AI assistant providing emotional support and mental health advice",
         "type": "Health",
-        "tags": ["Mental", "Emotional", "Health"]
+        "tags": [
+          "Mental",
+          "Emotional",
+          "Health"
+        ]
       },
       "creativeWriting": {
         "title": "Creative Writing Assistant",
         "description": "Sparks inspiration, assists in creating novels, poetry and various creative content",
         "type": "Writing",
-        "tags": ["Creative", "Writing", "Inspiration"]
+        "tags": [
+          "Creative",
+          "Writing",
+          "Inspiration"
+        ]
       },
       "dataAnalysis": {
         "title": "Data Analysis Expert",
         "description": "Professional assistant for data analysis, statistics and visualization",
         "type": "Data",
-        "tags": ["Data", "Analysis", "Statistics"]
+        "tags": [
+          "Data",
+          "Analysis",
+          "Statistics"
+        ]
       },
       "travelPlanner": {
         "title": "Travel Planner",
         "description": "Helps plan travel routes, recommend attractions and provide travel advice",
         "type": "Lifestyle",
-        "tags": ["Travel", "Planning", "Advice"]
+        "tags": [
+          "Travel",
+          "Planning",
+          "Advice"
+        ]
       },
       "dietitian": {
         "title": "Health Diet Advisor",
         "description": "Provides balanced dietary advice and healthy recipes",
         "type": "Health",
-        "tags": ["Diet", "Health", "Nutrition"]
+        "tags": [
+          "Diet",
+          "Health",
+          "Nutrition"
+        ]
       },
       "japaneseCoach": {
         "title": "Japanese Learning Coach",
         "description": "Professional Japanese learning guidance and practice partner",
         "type": "Education",
-        "tags": ["Japanese", "Learning", "Language"]
+        "tags": [
+          "Japanese",
+          "Learning",
+          "Language"
+        ]
       }
     }
   },
@@ -247,7 +337,6 @@
       "addModel": "Add model",
       "confirmDeleteModel": "Delete model",
       "confirmDeleteModelDesc": "Are you sure you want to delete this model? This action cannot be undone.",
-
       "providerDialog": {
         "addProviderTitle": "Add New Provider",
         "addProviderDesc": "Add a custom LLM provider by filling in the necessary configuration.",

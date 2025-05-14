@@ -8,6 +8,7 @@ import Email from '@/pages/email.vue'
 import Calendar from '@/pages/calendar.vue'
 import Analytics from 'analytics'
 import googleAnalytics from '@analytics/google-analytics'
+import Rag from '@/pages/rag.vue'
 
 /* Initialize analytics */
 const analytics = Analytics({

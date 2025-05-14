@@ -60,7 +60,7 @@ async function createWindow() {
   new Analytics()
   win = new BrowserWindow({
     title: 'Main window',
-    icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
+    icon: path.join(__dirname, '../../public/icon.png'),
     width: windowWidth,
     height: windowHeight,
     titleBarStyle: 'hidden',
