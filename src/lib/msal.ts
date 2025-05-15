@@ -37,10 +37,15 @@ export async function initializeMsal() {
   return msalInstance
 }
 
-// Modificado para manejar automáticamente el fallback a redirección sin errores visibles
 export async function loginWithMicrosoft(useRedirect = false): Promise<AuthenticationResult | null> {
   if (!initialized || !msalInstance) {
     await initializeMsal()
+  }
+
+  // Verificación de seguridad para garantizar que msalInstance esté definido
+  if (!msalInstance) {
+    console.error("MSAL instance no está inicializado correctamente")
+    return null
   }
 
   const authParams = {
@@ -50,7 +55,7 @@ export async function loginWithMicrosoft(useRedirect = false): Promise<Authentic
   if (useRedirect) {
     // Usar silenciosamente redirección
     try {
-      await msalInstance?.loginRedirect(authParams as RedirectRequest)
+      await msalInstance.loginRedirect(authParams as RedirectRequest)
     } catch (error) {
       console.error("Error en redirección:", error)
     }
@@ -58,7 +63,7 @@ export async function loginWithMicrosoft(useRedirect = false): Promise<Authentic
   } else {
     try {
       // Intenta con popup primero
-      return await msalInstance?.loginPopup({
+      const result = await msalInstance.loginPopup({
         ...authParams,
         popupWindowAttributes: {
           width: 600,
@@ -67,12 +72,14 @@ export async function loginWithMicrosoft(useRedirect = false): Promise<Authentic
           top: window.screenY + (window.outerHeight - 600) / 2
         }
       } as PopupRequest)
+      
+      return result || null // Asegurarnos de que devolvemos null en lugar de undefined
     } catch (error) {
       // Si falla el popup, cambiar automáticamente a redirección sin mostrar error al usuario
       if (error instanceof BrowserAuthError && error.message.includes('popup_window_error')) {
         console.log('Manejando error de popup automáticamente...')
         try {
-          await msalInstance?.loginRedirect(authParams as RedirectRequest)
+          await msalInstance.loginRedirect(authParams as RedirectRequest)
         } catch (redirectError) {
           console.error("Error al redirigir:", redirectError)
         }

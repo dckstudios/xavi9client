@@ -3,6 +3,7 @@ type Updater<T> = T | ((prev: T) => T)
 import type { Ref } from 'vue'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import DOMPurify from 'dompurify'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -94,3 +95,127 @@ export function modelSizeToGB(size: string): string {
       return 'Unknown'
   }
 }
+export function sintetizarCorreo(html: string): string {
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(html, 'text/html')
+
+  // 1. Eliminar basura visual
+  doc.querySelectorAll('style, script, link, head, meta, title').forEach(el => el.remove())
+
+  // 2. Limpiar atributos innecesarios
+  doc.querySelectorAll('*').forEach(el => {
+    el.removeAttribute('style')
+    el.removeAttribute('class')
+    el.removeAttribute('id')
+    el.removeAttribute('width')
+    el.removeAttribute('height')
+    el.removeAttribute('cellpadding')
+    el.removeAttribute('cellspacing')
+    el.removeAttribute('border')
+  })
+
+  // 3. Procesar imágenes
+  doc.querySelectorAll('img').forEach(img => {
+    const src = img.getAttribute('src') || ''
+    if (!src || src.includes('cid:') || src.length < 10) {
+      img.remove() // Imagen rota o incrustada
+    } else {
+      img.setAttribute('style', 'max-width:100%;border-radius:4px;margin:0.75rem 0;')
+    }
+  })
+
+  // 4. Convertir todo el texto a párrafos claros
+  doc.body.innerHTML = doc.body.innerHTML
+    .replace(/<br\s*\/?>/gi, '</p><p>')
+    .replace(/<div[^>]*>/gi, '<p>')
+    .replace(/<\/div>/gi, '</p>')
+
+  // 5. Enlaces visibles y estilizados
+  doc.querySelectorAll('a').forEach(a => {
+    a.setAttribute('target', '_blank')
+    a.setAttribute('rel', 'noopener noreferrer')
+    a.setAttribute('style', 'color:#60a5fa;font-weight:500;text-decoration:underline;word-break:break-word')
+  })
+
+  // 6. Botones de acción transformados
+  doc.querySelectorAll('button, input[type="submit"]').forEach(el => {
+    const button = document.createElement('span')
+    button.innerText = el.getAttribute('value') || el.textContent || 'Botón'
+    button.setAttribute('style', 'display:inline-block;background:white;color:black;padding:0.4rem 0.8rem;border-radius:6px;font-weight:600;margin:0.5rem 0;')
+    el.replaceWith(button)
+  })
+
+  // 7. Estilo general por defecto
+  doc.querySelectorAll('*').forEach(el => {
+    const element = el as HTMLElement
+    element.style.color = '#ffffff'
+    element.style.fontSize = '0.95rem'
+    element.style.lineHeight = '1.6'
+    element.style.marginBottom = '0.5rem'
+    element.style.fontFamily = `'Segoe UI', system-ui, sans-serif`
+  })
+
+  // 8. Detectar basura (tokens gigantes tipo JWT) y limpiarlos
+  doc.querySelectorAll('p').forEach(p => {
+    if (p.textContent && p.textContent.length > 400) {
+      p.remove()
+    }
+  })
+
+  // 3. Separar los hilos de correo visualmente
+  separarHilosDeCorreo(doc)
+
+  // 9. Sanitizar y retornar
+  return DOMPurify.sanitize(doc.body.innerHTML, {
+    ADD_TAGS: ['style', 'span'],
+    ADD_ATTR: ['style', 'target', 'rel', 'src', 'href', 'alt', 'title'],
+    ALLOWED_TAGS: ['p', 'b', 'i', 'strong', 'em', 'ul', 'ol', 'li', 'a', 'img', 'span'],
+  })
+}
+
+function separarHilosDeCorreo(doc: Document): void {
+  // Detectar bloques <blockquote> (muy común en Gmail/Outlook)
+  doc.querySelectorAll('blockquote').forEach(block => {
+    const wrapper = doc.createElement('div')
+    wrapper.className = 'email-thread-block'
+
+    const header = doc.createElement('div')
+    header.className = 'email-thread-header'
+    header.textContent = 'Mensaje anterior'
+
+    const body = doc.createElement('div')
+    body.className = 'email-thread-body'
+    body.innerHTML = block.innerHTML
+
+    wrapper.appendChild(header)
+    wrapper.appendChild(body)
+
+    block.replaceWith(wrapper)
+  })
+
+  // Detectar posibles hilos no estructurados, con muchos <br> seguidos
+  doc.querySelectorAll('div, p').forEach(el => {
+    const text = el.textContent || ''
+    if (
+      text.length > 300 &&
+      /(on .* wrote:|el .* escribió:|sent:|de:|from:)/i.test(text) &&
+      (el.innerHTML.match(/<br\s*\/?>/gi) || []).length > 5
+    ) {
+      const wrapper = doc.createElement('div')
+      wrapper.className = 'email-thread-block'
+
+      const header = doc.createElement('div')
+      header.className = 'email-thread-header'
+      header.textContent = 'Correo anterior'
+
+      const body = doc.createElement('div')
+      body.className = 'email-thread-body'
+      body.innerHTML = el.innerHTML
+
+      wrapper.appendChild(header)
+      wrapper.appendChild(body)
+      el.replaceWith(wrapper)
+    }
+  })
+}
+
